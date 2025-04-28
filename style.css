@@ -43,6 +43,8 @@ body {
   display: flex;
   gap: 20px;
   align-items: start;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .main-content {
@@ -348,7 +350,7 @@ svg.point {
 
 .bars {
   /* border: solid 1px pink; */
-  /* width: 100%; */
+  /* width: 50%; */
   display: flex;
   justify-content: space-between;
   gap: 5px;
@@ -369,16 +371,41 @@ svg.point {
   padding-left: 10px; /* Add spacing between times */
 }
 
+
+
 @media only screen and (max-width: 470px) {
   .container {
     width: 360px;
   }
+  .time-display{
+    flex-direction: column;
+  }
+
+  .time-display .time:last-child{
+    text-align: right;
+  }
+
+  .bars{
+    width: 100%;
+    height: 25px;
+  }
+  
 }
 
 @media only screen and (max-width: 380px) {
   .container {
     width: 320px;
   }
+
+  .bars{
+    width: 100%;
+    height: 25px;
+  }
+
+  .time-display{
+    flex-direction: column;
+  }
+  
 }
 
 .powerOn {
