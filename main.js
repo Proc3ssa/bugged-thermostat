@@ -210,6 +210,8 @@ rooms.forEach((room) => {
   roomSelect.appendChild(option);
 });
 
+// Removed add new room option from dropdown
+
 // Set current temperature to currently selected room
 
 const setSelectedRoom = (selectedRoom) => {
@@ -450,4 +452,102 @@ document.querySelector(".rooms-control").addEventListener("click", (e) => {
   if (e.target.classList.contains("room-name")) {
     setSelectedRoom(e.target.parentNode.parentNode.id);
   }
+});
+
+function showModal() {
+  document.getElementById("modalOverlay").style.display = "flex";
+}
+
+function closeModal() {
+  document.getElementById("modalOverlay").style.display = "none";
+}
+
+function submitForm() {
+  const nameInput = document.getElementById("name");
+  const currTempInput = document.getElementById("currTemp");
+  const coldPresetInput = document.getElementById("coldPreset");
+  const warmPresetInput = document.getElementById("warmPreset");
+  const roomImageInput = document.getElementById("room-image");
+
+  const name = nameInput.value;
+  const currTemp = parseInt(currTempInput.value);
+  const coldPreset = parseInt(coldPresetInput.value);
+  const warmPreset = parseInt(warmPresetInput.value);
+  const imageFile = roomImageInput.files[0];
+
+  if (!name || isNaN(currTemp) || isNaN(coldPreset) || isNaN(warmPreset) || !imageFile) {
+    alert("Please fill in all fields and select an image.");
+    return;
+  }
+
+  const imageUrl = URL.createObjectURL(imageFile); // Create object URL
+
+  const newRoom = {
+    name: name,
+    currTemp: currTemp,
+    coldPreset: coldPreset,
+    warmPreset: warmPreset,
+    image: imageUrl, // Use object URL for image
+    airConditionerOn: false,
+    startTime: '16:30', // Default values, can be made configurable later
+    endTime: '20:00',   // Default values, can be made configurable later
+
+    setCurrTemp(temp) {
+      this.currTemp = temp;
+    },
+
+    setColdPreset(newCold) {
+      this.coldPreset = newCold;
+    },
+
+    setWarmPreset(newWarm) {
+      this.warmPreset = newWarm;
+    },
+
+    decreaseTemp() {
+      this.currTemp--;
+    },
+
+    increaseTemp() {
+      this.currTemp++;
+    },
+    toggleAircon() {
+      this.airConditionerOn
+        ? (this.airConditionerOn = false)
+        : (this.airConditionerOn = true);
+    },
+  };
+
+  rooms.push(newRoom);
+  generateRooms(); // Update room controls display
+  updateRoomDropdown(); // Update the dropdown with the new room
+  closeModal(); // hide the modal after submission
+
+  // Clear the form
+  nameInput.value = "";
+  currTempInput.value = "";
+  coldPresetInput.value = "";
+  warmPresetInput.value = "";
+  roomImageInput.value = ""; // Clear the file input
+}
+
+// Function to update the room dropdown
+function updateRoomDropdown() {
+  roomSelect.innerHTML = ''; // Clear existing options
+  rooms.forEach((room) => {
+    const option = document.createElement("option");
+    option.value = room.name;
+    option.textContent = room.name;
+    roomSelect.appendChild(option);
+  });
+}
+
+// Call updateRoomDropdown initially to populate the dropdown
+updateRoomDropdown();
+
+const addRoomButton = document.getElementById('add-room-button');
+
+addRoomButton.addEventListener('click', () => {
+ showModal();
+  
 });
