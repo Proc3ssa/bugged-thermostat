@@ -27,11 +27,33 @@
     <title>Smart Home | Thermostat Widget</title>
   </head>
   <body>
+    <!-- new room form -->
+  <div class="overlay" id="modalOverlay">
+    <div class="modal">
+      <h3>Add a new room</h3>
+      <input type="text" id="name" placeholder="Room name">
+      <input type="number" id="currTemp" placeholder="Current temperature">
+      <input type="number" id="coldPreset" placeholder="cold preset (min 0)">
+      <input type="number" id="warmPreset" placeholder="Warm preset (max 32)">
+      <input type="file" id="room-image" accept="image/*">
+
+
+      <button onclick="submitForm()">Submit</button>
+      <button onclick="closeModal()">Cancel</button>
+    </div>
+  </div>
+
+
+
+
     <div class="main-container">
       <div class="container animate__animated animate__fadeInUp">
         <div class="top-content">
           <h1 class="logo">Thermostat</h1>
-          <select id="rooms"></select>
+          <select id="rooms">
+            
+          </select>
+          <button id="add-room-button">Add new room</button>
         </div>
         <!-- Interior card -->
         <div class="room">
