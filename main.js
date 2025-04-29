@@ -240,7 +240,7 @@ defaultSettings.addEventListener("click", function (e) {});
 // Increase and decrease temperature
 document.getElementById("increase").addEventListener("click", () => {
   const room = rooms.find((currRoom) => currRoom.name === selectedRoom);
-  const increaseRoomTemperature = room.increaseTemp;
+  const increaseRoomTemperature = room.increaseTemp();
 
   if (room.currTemp < 32) {
     increaseRoomTemperature();
@@ -261,7 +261,7 @@ document.getElementById("increase").addEventListener("click", () => {
 
 document.getElementById("reduce").addEventListener("click", () => {
   const room = rooms.find((currRoom) => currRoom.name === selectedRoom);
-  const decreaseRoomTemperature = room.decreaseTemp;
+  const decreaseRoomTemperature = room.decreaseTemp();
 
   if (room.currTemp > 10) {
     decreaseRoomTemperature();
