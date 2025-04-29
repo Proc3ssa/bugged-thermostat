@@ -374,7 +374,7 @@ const generateRooms = () => {
     roomsHTML += `
     <div class="room-control" id="${room.name}">
           <div class="top">
-            <h3 class="room-name">${room.name} - ${room.currTemp}°</h3>
+            <h3 class="room-name">${room.name} : ${room.currTemp}°</h3>
             <button class="switch">
               <ion-icon name="power-outline" class="${
                 room.airConditionerOn ? "powerOn" : ""
