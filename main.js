@@ -169,8 +169,11 @@ const setOverlay = (room) => {
 // Set svg accordingly
 const svgPoint = document.querySelector(".point");
 const angleOffset = 86;
+const MIN_TEMP = 10;
+const MAX_TEMP = 32;
+
 const calculatePointPosition = (currTemp) => {
-  const normalizedTemp = (currTemp - 10) / (32 - 10);
+  const normalizedTemp = (currTemp - MIN_TEMP) / (MAX_TEMP - MIN_TEMP);
   const angle = normalizedTemp * 180 + angleOffset;
 
   const radians = (angle * Math.PI) / 180;
@@ -197,7 +200,6 @@ let selectedRoom = rooms[0].name;
 // Set default temperature
 currentTemp.textContent = `${rooms[0].currTemp}°`;
 
-setInitialOverlay();
 
 document.querySelector(".currentTemp").innerText = `${rooms[0].currTemp}°`;
 // Add new options from rooms array
@@ -235,21 +237,40 @@ roomSelect.addEventListener("change", function () {
 
 // Set preset temperatures
 const defaultSettings = document.querySelector(".default-settings");
-defaultSettings.addEventListener("click", function (e) {});
+defaultSettings.addEventListener("click", function (e) {
+  const room = rooms.find((currRoom) => currRoom.name === selectedRoom);
+  if (e.target.id === 'cool') {
+    room.setCurrTemp(room.coldPreset);
+    coolBtn.style.backgroundColor = "#FFD7A8"; // Highlight cool button
+    warmBtn.style.backgroundColor = "#d9d9d9";
+  } else if (e.target.id === 'warm') {
+    room.setCurrTemp(room.warmPreset);
+    warmBtn.style.backgroundColor = "#FFD7A8"; // Highlight warm button
+    coolBtn.style.backgroundColor = "#d9d9d9";
+  }
+  setIndicatorPoint(room.currTemp);
+  currentTemp.textContent = `${room.currTemp}°`;
+  setOverlay(room);
+  document.querySelector(".currentTemp").innerText = `${room.currTemp}°`;
+  generateRooms(); // Regenerate to update room control status
+});
 
 // Increase and decrease temperature
 document.getElementById("increase").addEventListener("click", () => {
   const room = rooms.find((currRoom) => currRoom.name === selectedRoom);
-  const increaseRoomTemperature = room.increaseTemp();
-
   if (room.currTemp < 32) {
-    increaseRoomTemperature();
+    room.increaseTemp();
   }
 
   setIndicatorPoint(room.currTemp);
   currentTemp.textContent = `${room.currTemp}°`;
 
-  generateRooms();
+  // Update only the current room control display
+  const roomControl = document.getElementById(room.name);
+  if (roomControl) {
+    roomControl.querySelector(".room-name").innerText = `${room.name} - ${room.currTemp}°`;
+    roomControl.querySelector(".room-status").innerText = `${room.currTemp > room.warmPreset ? "Cooling room to: " + room.coldPreset : "Warming room to: " + room.warmPreset}°`;
+  }
 
   setOverlay(room);
 
@@ -261,16 +282,19 @@ document.getElementById("increase").addEventListener("click", () => {
 
 document.getElementById("reduce").addEventListener("click", () => {
   const room = rooms.find((currRoom) => currRoom.name === selectedRoom);
-  const decreaseRoomTemperature = room.decreaseTemp();
-
-  if (room.currTemp > 10) {
-    decreaseRoomTemperature();
+  if (room.currTemp > MIN_TEMP) { // Use MIN_TEMP constant
+    room.decreaseTemp();
   }
 
   setIndicatorPoint(room.currTemp);
   currentTemp.textContent = `${room.currTemp}°`;
 
-  generateRooms();
+  // Update only the current room control display
+  const roomControl = document.getElementById(room.name);
+  if (roomControl) {
+    roomControl.querySelector(".room-name").innerText = `${room.name} - ${room.currTemp}°`;
+    roomControl.querySelector(".room-status").innerText = `${room.currTemp > room.warmPreset ? "Cooling room to: " + room.coldPreset : "Warming room to: " + room.warmPreset}°`;
+  }
 
   setOverlay(room);
 
@@ -305,24 +329,38 @@ document.getElementById("save").addEventListener("click", () => {
 
   if (coolInput.value && warmInput.value) {
     // Validate the data
-    if (coolInput.value < 10 || coolInput.value > 25) {
+    if (parseInt(coolInput.value) < parseInt(coolInput.min) || parseInt(coolInput.value) > parseInt(coolInput.max)) {
       errorSpan.style.display = "block";
-      errorSpan.innerText = "Enter valid temperatures (10° - 32°)";
+      errorSpan.innerText = `Enter valid temperatures for Cool (${coolInput.min}° - ${coolInput.max}°)`;
+      return; // Stop execution if validation fails
     }
 
-    if (warmInput.value < 25 || warmInput.value > 32) {
+    if (parseInt(warmInput.value) < parseInt(warmInput.min) || parseInt(warmInput.value) > parseInt(warmInput.max)) {
       errorSpan.style.display = "block";
-      errorSpan.innerText = "Enter valid temperatures (10° - 32°)";
+      errorSpan.innerText = `Enter valid temperatures for Warm (${warmInput.min}° - ${warmInput.max}°)`;
+      return; // Stop execution if validation fails
     }
+
+    // Validate that warm preset is not less than cool preset
+    if (parseInt(warmInput.value) < parseInt(coolInput.value)) {
+      errorSpan.style.display = "block";
+      errorSpan.innerText = "Warm preset must be greater than or equal to Cool preset";
+      return; // Stop execution if validation fails
+    }
+
     // Validation passed
     // Set current room's presets
     const currRoom = rooms.find((room) => room.name === selectedRoom);
 
-    currRoom.setColdPreset(coolInput.value);
-    currRoom.setWarmPreset(warmInput.value);
+    currRoom.setColdPreset(parseInt(coolInput.value));
+    currRoom.setWarmPreset(parseInt(warmInput.value));
 
     coolInput.value = "";
     warmInput.value = "";
+    errorSpan.style.display = "none"; // Hide error message on success
+  } else {
+    errorSpan.style.display = "block";
+    errorSpan.innerText = "Please enter values for both Cool and Warm presets";
   }
 });
 
@@ -348,12 +386,10 @@ const generateRooms = () => {
          
           <span class="room-status" style="display: ${
             room.airConditionerOn ? "" : "none"
-          }">${room.currTemp > 25 ? "Cooling room to: " : "Warming room to: "}${
-      room.currTemp
-    }°</span>
-        </div>
-    `;
-  });
+          }">${room.currTemp > room.warmPreset ? "Cooling room to: " + room.coldPreset : "Warming room to: " + room.warmPreset}°</span>
+         </div>
+     `;
+   });
 
   roomsControlContainer.innerHTML = roomsHTML;
 };
