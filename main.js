@@ -391,9 +391,19 @@ const generateRooms = () => {
           }">${room.currTemp > room.warmPreset ? "Cooling room to: " + room.coldPreset : "Warming room to: " + room.warmPreset}°</span>
          </div>
      `;
-   });
+  });
 
-  roomsControlContainer.innerHTML = roomsHTML;
+  const allAcsOn = rooms.every(room => room.airConditionerOn);
+  const buttonText = allAcsOn ? "Turn Off All AC" : "Turn On All AC";
+
+  roomsHTML = `
+    <div class="turn-on-all">
+      <button id="turn-on-all-acs">${buttonText}</button>
+    </div>
+  ` + roomsHTML;
+
+
+ roomsControlContainer.innerHTML = roomsHTML;
 };
 const displayTime = (room) => {
   return `
@@ -446,6 +456,20 @@ document.querySelector(".rooms-control").addEventListener("click", (e) => {
       (room) => room.name === e.target.parentNode.parentNode.id
     );
     room.toggleAircon();
+    generateRooms();
+  } else if (e.target.id === "turn-on-all-acs") {
+    const allAcsOn = rooms.every(room => room.airConditionerOn);
+    rooms.forEach(room => {
+      if (allAcsOn) {
+        if (room.airConditionerOn) {
+          room.toggleAircon();
+        }
+      } else {
+        if (!room.airConditionerOn) {
+          room.toggleAircon();
+        }
+      }
+    });
     generateRooms();
   }
 
@@ -550,4 +574,13 @@ const addRoomButton = document.getElementById('add-room-button');
 addRoomButton.addEventListener('click', () => {
  showModal();
   
+});
+
+document.getElementById("turn-on-all-acs").addEventListener("click", () => {
+  rooms.forEach(room => {
+    if (!room.airConditionerOn) {
+      room.toggleAircon();
+    }
+  });
+  generateRooms();
 });
