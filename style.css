@@ -369,7 +369,7 @@ svg.point {
   padding-left: 10px; /* Add spacing between times */
 }
 
-#add-room-button{
+#add-room-button, #turn-on-all-acs{
   border: 1px solid gray;
   border-radius: 5px;
   padding: 5px;
@@ -377,7 +377,7 @@ svg.point {
 
 }
 
-#add-room-button:hover{
+#add-room-button:hover, #turn-on-all-acs:hover{
   background-color: #85858644;
   border: none;
 }
@@ -420,10 +420,16 @@ svg.point {
   border-radius: 5px;
 }
 
-.modal button {
+.modal button{
   margin-top: 10px;
   padding: 5px 9px;
 }
+
+.turn-on-all {
+  /* margin-top: -10px; */
+  margin-bottom: 20px;
+}
+
 
 
 @media only screen and (max-width: 470px) {
@@ -444,7 +450,22 @@ svg.point {
 
 span.room-status {
   display: block;
-  /* border: solid 1px pink; */
   margin: 20px 0 0 0;
   color: #7c7c83;
 }
+
+.time-display input[type="time"]::-webkit-calendar-picker-indicator {
+  display: none;
+  -webkit-appearance: none;
+}
+
+.time-display input[type="time"] {
+  border: none;
+  background: none;
+  outline: none;
+  /* Hide the default clock icon */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
