@@ -342,6 +342,8 @@ const generateRooms = () => {
     }
   });
 };
+
+
 const displayTime = (room) => {
   const now = new Date();
   const currentHours = now.getHours();
@@ -457,14 +459,19 @@ function submitForm() {
   const coldPresetInput = document.getElementById("coldPreset");
   const warmPresetInput = document.getElementById("warmPreset");
   const roomImageInput = document.getElementById("room-image");
+  const startTimeInput = document.getElementById("startTime");
+  const endTimeInput = document.getElementById("endTime");
 
   const name = nameInput.value;
   const currTemp = parseInt(currTempInput.value);
   const coldPreset = parseInt(coldPresetInput.value);
   const warmPreset = parseInt(warmPresetInput.value);
   const imageFile = roomImageInput.files[0];
+  const startTime = startTimeInput.value;
+  const endTime = endTimeInput.value;
 
-  if (!name || isNaN(currTemp) || isNaN(coldPreset) || isNaN(warmPreset) || !imageFile) {
+
+  if (!name || isNaN(currTemp) || isNaN(coldPreset) || isNaN(warmPreset) || !imageFile || !startTime || !endTime) {
     alert("Please fill in all fields and select an image.");
     return;
   }
@@ -478,8 +485,8 @@ function submitForm() {
     warmPreset: warmPreset,
     image: imageUrl, // Use object URL for image
     airConditionerOn: false,
-    startTime: '16:30', // Default values, can be made configurable later
-    endTime: '20:00',   // Default values, can be made configurable later
+    startTime: startTime,
+    endTime: endTime,
 
     setCurrTemp(temp) {
       this.currTemp = temp;
@@ -552,3 +559,35 @@ document.getElementById("turn-on-all-acs").addEventListener("click", () => {
 
 // Update the room display every minute to show time progression
 setInterval(generateRooms, 60000);
+
+// Automatically control AC based on time
+const autoControlAirConditioners = () => {
+  const now = new Date();
+  const currentMinutes = now.getHours() * 60 + now.getMinutes();
+
+  rooms.forEach(room => {
+    const [startH, startM] = room.startTime.split(':').map(Number);
+    const [endH, endM] = room.endTime.split(':').map(Number);
+
+    const startMinutes = startH * 60 + startM;
+    let endMinutes = endH * 60 + endM;
+
+    const crossesMidnight = endMinutes < startMinutes;
+    const isInRange = crossesMidnight
+      ? currentMinutes >= startMinutes || currentMinutes < endMinutes
+      : currentMinutes >= startMinutes && currentMinutes < endMinutes;
+
+    if (isInRange && !room.airConditionerOn) {
+      room.airConditionerOn = true;
+    } else if (!isInRange && room.airConditionerOn) {
+      room.airConditionerOn = false;
+    }
+  });
+
+  generateRooms(); // Update display after changes
+};
+
+// Run auto control every minute
+setInterval(autoControlAirConditioners, 60000);
+autoControlAirConditioners(); // Run immediately at startup
+
