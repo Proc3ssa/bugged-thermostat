@@ -455,13 +455,13 @@ span.room-status {
 }
 
 .time-display input[type="time"]::-webkit-calendar-picker-indicator {
-  display: none;
+  display: none; /* Hide the default clock icon */
   -webkit-appearance: none;
 }
 
 .time-display input[type="time"] {
-  border: none;
-  background: none;
+  background: #f9f9f9; /* Add a slight background */
+  padding: 4px; /* Add some padding */
   outline: none;
   /* Hide the default clock icon */
   -webkit-appearance: none;

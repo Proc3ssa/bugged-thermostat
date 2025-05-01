@@ -330,6 +330,15 @@ const generateRooms = () => {
           generateRooms(); // Re-render to show updated time
         }
       });
+
+      // Add click listeners to show the time picker
+      startTimeInput.addEventListener("click", function() {
+        this.showPicker();
+      });
+
+      endTimeInput.addEventListener("click", function() {
+        this.showPicker();
+      });
     }
   });
 };
