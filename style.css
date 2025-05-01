@@ -450,9 +450,22 @@ svg.point {
 
 span.room-status {
   display: block;
-  /* border: solid 1px pink; */
   margin: 20px 0 0 0;
   color: #7c7c83;
 }
 
+.time-display input[type="time"]::-webkit-calendar-picker-indicator {
+  display: none;
+  -webkit-appearance: none;
+}
+
+.time-display input[type="time"] {
+  border: none;
+  background: none;
+  outline: none;
+  /* Hide the default clock icon */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
 

@@ -56,10 +56,12 @@
   <!-- Overlay and Modal -->
   <div class="overlay" id="modalOverlay">
     <div class="modal">
-      <h3>Enter Your Details</h3>
-      <input type="text" id="name" placeholder="Name">
-      <input type="email" id="email" placeholder="Email">
-      <button onclick="submitForm()">Submit</button>
+      <h3>Set Time Schedules</h3>
+      <label for="startTime">Start Time:</label>
+      <input type="time" id="startTime">
+      <label for="endTime">End Time:</label>
+      <input type="time" id="endTime">
+      <button onclick="submitForm()">Set Schedules</button>
       <button onclick="closeModal()">Cancel</button>
     </div>
   </div>
@@ -77,11 +79,11 @@
     }
 
     function submitForm() {
-      const name = document.getElementById("name").value;
-      const email = document.getElementById("email").value;
+      const startTime = document.getElementById("startTime").value;
+      const endTime = document.getElementById("endTime").value;
 
       document.getElementById("output").innerHTML =
-        `<strong>Name:</strong> ${name}<br><strong>Email:</strong> ${email}`;
+        `<strong>Start Time:</strong> ${startTime}<br><strong>End Time:</strong> ${endTime}`;
 
       closeModal(); // hide the modal after submission
     }
