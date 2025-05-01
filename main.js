@@ -36,10 +36,10 @@ const createRoom = (name, currTemp, coldPreset, warmPreset, image, startTime, en
 
 // Room objects
 const rooms = [
-  createRoom("Living Room", 32, 20, 32, "./assets/living-room.jpg", '16:30', '20:00'),
-  createRoom("Kitchen", 29, 20, 32, "./assets/kitchen.jpg", '16:30', '20:00'),
-  createRoom("Bathroom", 30, 20, 32, "./assets/bathroom.jpg", '16:30', '20:00'),
-  createRoom("Bedroom", 31, 20, 32, "./assets/bedroom.jpg", '16:30', '20:00'),
+  createRoom("Bedroom", 31, 20, 32, "./assets/bedroom.jpg", '00:00', '12:00'),
+  createRoom("Living Room", 32, 20, 32, "./assets/living-room.jpg", '00:00', '12:00'),
+  createRoom("Kitchen", 29, 20, 32, "./assets/kitchen.jpg", '00:00', '12:00'),
+  createRoom("Bathroom", 30, 20, 32, "./assets/bathroom.jpg", '00:00', '12:00'),
 ];
 
 const coolOverlay= `linear-gradient(
