@@ -460,6 +460,7 @@ span.room-status {
 }
 
 .time-display input[type="time"] {
+  border: none;
   background: #f9f9f9; /* Add a slight background */
   padding: 4px; /* Add some padding */
   outline: none;
