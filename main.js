@@ -543,3 +543,18 @@ document.getElementById("turn-on-all-acs").addEventListener("click", () => {
 
 // Update the room display every minute to show time progression
 setInterval(generateRooms, 60000);
+
+export default {
+  createRoom,
+  setInitialOverlay,
+  setOverlay,
+  calculatePointPosition,
+  setIndicatorPoint,
+  setSelectedRoom,
+  generateRooms,
+  displayTime,
+  showModal,
+  closeModal,
+  submitForm,
+  updateRoomDropdown,
+};
