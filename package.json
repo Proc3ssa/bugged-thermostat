@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/Proc3ssa/bugged-thermostat/issues"
   },
-  "homepage": "https://github.com/Proc3ssa/bugged-thermostat#readme"
+  "homepage": "https://github.com/Proc3ssa/bugged-thermostat#readme",
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
 }
