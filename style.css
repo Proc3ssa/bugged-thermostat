@@ -371,6 +371,69 @@ svg.point {
   padding-left: 10px; /* Add spacing between times */
 }
 
+#add-room-button, #turn-on-all-acs{
+  border: 1px solid gray;
+  border-radius: 5px;
+  padding: 5px;
+  background-color: transparent;
+
+}
+
+#add-room-button:hover, #turn-on-all-acs:hover{
+  background-color: #85858644;
+  border: none;
+}
+
+ /* Button styling */
+ .open-btn {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* Overlay background */
+.overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* semi-transparent */
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Modal box */
+.modal {
+  background: #ffffff;
+  padding: 20px 30px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  min-width: 300px;
+  width: 450px;
+}
+
+.modal input {
+  background: transparent;
+  width: 100%;
+  margin: 8px 0;
+  padding: 8px;
+  border: 1px solid var(--text-secondary);
+  border-radius: 5px;
+}
+
+.modal button{
+  margin-top: 10px;
+  padding: 5px 9px;
+}
+
+.turn-on-all {
+  /* margin-top: -10px; */
+  margin-bottom: 20px;
+}
+
+
+
 
 
 @media only screen and (max-width: 470px) {
@@ -414,7 +477,22 @@ svg.point {
 
 span.room-status {
   display: block;
-  /* border: solid 1px pink; */
   margin: 20px 0 0 0;
   color: #7c7c83;
 }
+
+.time-display input[type="time"]::-webkit-calendar-picker-indicator {
+  display: none;
+  -webkit-appearance: none;
+}
+
+.time-display input[type="time"] {
+  border: none;
+  background: none;
+  outline: none;
+  /* Hide the default clock icon */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
